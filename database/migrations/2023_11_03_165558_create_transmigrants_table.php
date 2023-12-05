@@ -29,7 +29,7 @@ return new class extends Migration
                 ->default(config('select_option.transmigrant_status')[0]);
             $table->timestamps();
         });
-        Schema::create('transmigrant_skill', function (Blueprint $table) {
+        Schema::create('transmigrant_skills', function (Blueprint $table) {
             $table->id();
             $table->foreignId('transmigrant_id')
                 ->constrained('transmigrants')
@@ -39,6 +39,7 @@ return new class extends Migration
                 ->constrained('skills')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
+            $table->string('certificate', 255)->nullable();
             $table->timestamps();
         });
         Schema::create('transmigrant_attachments', function (Blueprint $table) {
@@ -74,7 +75,7 @@ return new class extends Migration
     {
         Schema::dropIfExists('transmigrant_participants');
         Schema::dropIfExists('transmigrant_attachments');
-        Schema::dropIfExists('transmigrant_skill');
+        Schema::dropIfExists('transmigrant_skills');
         Schema::dropIfExists('transmigrants');
     }
 };

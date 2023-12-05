@@ -24,12 +24,13 @@ return new class extends Migration
             $table->enum('sex',['Male','Female'])->nullable();
             $table->enum('religion', config('select_option.religion'))->nullable();
             $table->enum('marital_status', config('select_option.marital_status'))->nullable();
-            $table->enum('education', config('select_option.education'))->nullable();
             $table->string('job_status')->nullable();
             $table->enum('citizenship', config('select_option.citizenship'))->nullable();
             $table->string('address', 255)->nullable();
             $table->char('village_code', 10)->nullable();
             $table->string('photo',255)->nullable();
+            $table->string('citizen_card', 255)->nullable();
+            $table->string('family_card', 255)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
@@ -39,21 +40,34 @@ return new class extends Migration
                 ->onUpdate('cascade')->onDelete('set null');
         });
 
-        Schema::create('citizen_skill', function (Blueprint $table) {
+        Schema::create('citizen_educations', function (Blueprint $table) {
             $table->id();
-            
             $table->foreignId('citizen_id')
                 ->constained('citizens')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
+            $table->enum('name', config('select_option.education'));
+            $table->year('graduation')->nullable();
+            $table->string('certificate', 255)->nullable();
+            $table->timestamps();
+        });
 
+        Schema::create('citizen_skills', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('citizen_id')
+                ->constained('citizens')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
             $table->foreignId('skill_id')
                 ->constained('skills')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            
+            $table->string('certificate', 255)->nullable();
+            $table->boolean('validity')->default(0);
             $table->timestamps();
         });
+
+       
     }
 
     /**
@@ -61,7 +75,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('citizen_skill');
+        Schema::dropIfExists('citizen_skills');
+        Schema::dropIfExists('citizen_educations');
         Schema::dropIfExists('citizens');
     }
 };

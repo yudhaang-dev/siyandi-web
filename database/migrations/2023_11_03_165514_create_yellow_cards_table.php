@@ -30,7 +30,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('yellow_card_skill', function (Blueprint $table) {
+        Schema::create('yellow_card_skills', function (Blueprint $table) {
             $table->id();
             $table->foreignId('yellow_card_id')
                 ->constrained('yellow_cards')
@@ -40,6 +40,7 @@ return new class extends Migration
                 ->constrained('skills')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
+            $table->string('certificate', 255)->nullable();
             $table->timestamps();
         });
         Schema::create('yellow_card_attachments', function (Blueprint $table) {
@@ -60,7 +61,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('yellow_card_attachments');
-        Schema::dropIfExists('yellow_card_skill');
+        Schema::dropIfExists('yellow_card_skills');
         Schema::dropIfExists('yellow_cards');
     }
 };
