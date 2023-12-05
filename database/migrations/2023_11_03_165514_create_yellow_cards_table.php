@@ -30,6 +30,18 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        Schema::create('yellow_card_educations', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('yellow_card_id')
+                ->constrained('yellow_cards')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+            $table->enum('name', config('select_option.education'));
+            $table->year('graduation')->nullable();
+            $table->string('certificate', 255)->nullable();
+            $table->timestamps();
+        });
+
         Schema::create('yellow_card_skills', function (Blueprint $table) {
             $table->id();
             $table->foreignId('yellow_card_id')
@@ -43,6 +55,7 @@ return new class extends Migration
             $table->string('certificate', 255)->nullable();
             $table->timestamps();
         });
+
         Schema::create('yellow_card_attachments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('yellow_card_id')
@@ -62,6 +75,7 @@ return new class extends Migration
     {
         Schema::dropIfExists('yellow_card_attachments');
         Schema::dropIfExists('yellow_card_skills');
+        Schema::dropIfExists('yellow_card_educations');
         Schema::dropIfExists('yellow_cards');
     }
 };
